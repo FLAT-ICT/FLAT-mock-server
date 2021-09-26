@@ -2,7 +2,7 @@
 mock server by Python
 
 ```bash
-docker-compose up -d
+docker-compose up 
 ```
 するとサーバーが立ち上がります。
 
