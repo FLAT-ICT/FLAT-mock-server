@@ -23,7 +23,7 @@ async def registor(name_and_pass: NameAndPassword):
 
 @app.post("/v1/login")
 async def login(id_and_password: IdAndPassword):
-    id, _ = IdAndPassword.id, IdAndPassword.password
+    id, _ = id_and_password.id, id_and_password.password
     if len(id) == 6:
         return {"message": "Ok"}
     return {"message": "Ng"}
