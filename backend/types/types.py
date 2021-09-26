@@ -1,20 +1,14 @@
-from typing import Literal, Optional, Union
+from typing import Literal, Optional
 from pydantic import BaseModel
 
-from dataclasses import dataclass
-
-# class RegistorInfo(BaseModel):
-#     name: str
-#     password: str
-
-
-# class LoginInfo(BaseModel):
-#     id: str
-#     passowrd: str
 
 class ToGetUserInfo(BaseModel):
     id: str
     icon: Optional[bool] = None
+
+
+class Message(BaseModel):
+    message: str
 
 
 class User(BaseModel):
@@ -42,3 +36,16 @@ class Result(BaseModel):
     message: str"""
     result: Literal["correct", "error"]
     message: str
+
+
+class IdPair(BaseModel):
+    id1: str
+    id2: str
+
+class NameAndPassword(BaseModel):
+    name: str
+    password: str
+
+class IdAndPassword(BaseModel):
+    id: str
+    password: str
