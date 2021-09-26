@@ -1,6 +1,8 @@
 from typing import Optional
+
 from fastapi import FastAPI
 
+from backend.types.types import Friends, User
 
 app = FastAPI()
 
@@ -22,15 +24,44 @@ async def login(id: str, password: str):
 
 
 # データ取得系
-@app.get("/v1/me")
-async def get_me(id: str, icon: bool = False) -> None:
-    return {"message": "Ok"}
+@app.get("/v1/me", response_model=list[User])
+async def get_me(id: str, icon: Optional[bool] = None):
+    # ここ何返すか迷ってる
+    # list[User] を返すようにするのもあり
+    if len(id) != 6:
+        return []
+    result = [{"id": id, "name": "hoge",
+              "status": "学内にいる", "beacon": "595教室"}]
+    if icon:
+        result[0].update({"icon": "this_is_binary_icon"})
+    return result
 
 
-@app.get("/v1/friends")
-async def get_friends(id: str, icon: bool = False):
+@app.get("/v1/friends", response_model=Friends)
+async def get_friends(id: str, icon: Optional[bool] = None):
     # icon -> QueryString
-    pass
+    if len(id) != 6:
+        return {"mutual": [], "one_side": []}
+    result = {
+        "mutual": [
+            {"id": "000000", "name": "usr01",
+             "status": "学内にいる", "beacon": "595教室"},
+            {"id": "000001", "name": "usr02",
+             "status": "学内にいる", "beacon": "講堂"},
+            {"id": "000002", "name": "usr03",
+             "status": "学内にいる", "beacon": "体育館"}
+        ],
+        "one_side": [
+            {"id": "000010", "name": "usr10",
+             "status": "学内にいる", "beacon": "情報ライブラリー"}
+        ]
+    }
+    if icon:
+        for item in result["mutual"]:
+            item.update({"icon": b"binary_object"})
+        for item in result["one_side"]:
+            item.update({"icon": b"binary_object"})
+    return result
 
 
 # ユーザーデータ変更系
