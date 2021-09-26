@@ -2,7 +2,7 @@ from typing import Optional
 
 from fastapi import FastAPI
 
-from backend.types.types import Friends, User
+from backend.types.types import Friends, IdAndBeacon, IdAndIcon, IdAndName, IdAndPassword, IdAndStatus, IdPair, Message, NameAndPassword, User
 
 app = FastAPI()
 
@@ -14,13 +14,19 @@ async def root():
 
 # 認証系
 @app.post("/v1/registor")
-async def registor(name: str, password: str):
-    return {"message": "Ok"}
+async def registor(name_and_pass: NameAndPassword):
+    name, _ = NameAndPassword.name, NameAndPassword.password
+    if name:
+        return {"message": "Ok"}
+    return {"message": "Ng"}
 
 
 @app.post("/v1/login")
-async def login(id: str, password: str):
-    return {"message": "Ok"}
+async def login(id_and_password: IdAndPassword):
+    id, _ = id_and_password.id, id_and_password.password
+    if len(id) == 6:
+        return {"message": "Ok"}
+    return {"message": "Ng"}
 
 
 # データ取得系
@@ -65,38 +71,60 @@ async def get_friends(id: str, icon: Optional[bool] = None):
 
 
 # ユーザーデータ変更系
-@app.post("/v1/me/name")
-async def update_profile(id: str, name: str):
-    pass
+@app.post("/v1/me/name", response_model=Message)
+async def update_profile(id_and_name: IdAndName):
+    id, name = id_and_name.id, id_and_name.name
+    if len(id) == 6 and name:
+        return {"message": "Ok"}
+    return {"message": "Ng"}
 
 
-@app.post("/v1/me/status")
-async def update_status(id: str, status: str):
-    pass
+@app.post("/v1/me/status", response_model=Message)
+async def update_status(id_and_status: IdAndStatus):
+    id, status = id_and_status.id, id_and_status.status
+    if len(id) == 6 and status in ["学校にいる", "今暇", "忙しい", "学校にいない"]:
+        return {"message": "Ok"}
+    return {"message": "Ng"}
 
 
-@app.post("/v1/me/icon")
-async def update_icon(id: str, icon: str):
+@app.post("/v1/me/icon", response_model=Message)
+async def update_icon(id_and_icon: IdAndIcon):
+    id, icon = id_and_icon.id, id_and_icon.icon
     # ファイルを投げる方法を調べる
-    pass
+    if len(id) == 6 and icon:
+        return {"message": "Ok"}
+    return {"message": "Ng"}
 
 
-@app.post("/v1/me/beacon")
-async def update_profile(id: str, profile: str):
-    pass
+@app.post("/v1/me/beacon", response_model=Message)
+async def update_profile(id_and_beacon: IdAndBeacon):
+    id, beacon = id_and_beacon.id, id_and_beacon.beacon
+    # feature: check(beacon)
+    if len(id) == 6 and beacon:
+        return {"message": "Ok"}
+    return {"message": "Ng"}
 
 
 # 友達登録・削除周りの処理
-@app.post("v1/friends/add")
-async def add_friend(user_id: str, follow_id: str):
-    pass
+@app.post("/v1/friends/add", response_model=Message)
+async def add_friend(id_pair: IdPair):
+    user_id, follow_id = id_pair.id1, id_pair.id2
+    if len(user_id) == 6 and len(follow_id) == 6:
+        return {"message": "Ok"}
+    return {"message": "Ng"}
 
 
-@app.post("v1/friends/remove")
-async def remove_friend(user_id: str, follower_id: str):
-    pass
+@app.post("/v1/friends/remove", response_model=Message)
+async def remove_friend(id_pair: IdPair):
+    user_id, follow_id = id_pair.id1, id_pair.id2
+    if len(user_id) == 6 and len(follow_id) == 6:
+        return {"message": "Ok"}
+    return {"message": "Ng"}
 
 
-@app.post("v1/friends/reject")
-async def reject_friend(user_id: str, follow_id: str):
-    pass
+@ app.post("/v1/friends/reject", response_model=Message)
+async def reject_friend(id_pair: IdPair):
+    user_id, follow_id = id_pair.id1, id_pair.id2
+    if len(user_id) == 6 and len(follow_id) == 6:
+        return {"message": "Ok"}
+    return {"message": "Ng"}
