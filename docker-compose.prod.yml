@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  fastapi-sample:
+    build:
+      target: prod
+    ports:
+      - "8080"
+    environment:
+      - PORT=8080

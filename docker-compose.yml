@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  fastapi-sample:
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile
+    image: fastapi-sample
+    working_dir: /usr/src/mock_server
+    command: >
+      pipenv run uvicorn backend.main:app --port 8080 --host 0.0.0.0
+    volumes:
+      - ./logs:/usr/src/mock_server/logs
+    environment:
+      - TZ=Asia/Tokyo
+    restart: always
