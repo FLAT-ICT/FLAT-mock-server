@@ -42,10 +42,32 @@ class IdPair(BaseModel):
     id1: str
     id2: str
 
+
 class NameAndPassword(BaseModel):
     name: str
     password: str
 
+
 class IdAndPassword(BaseModel):
     id: str
     password: str
+
+
+class IdAndName(BaseModel):
+    id: str
+    name: str
+
+
+class IdAndStatus(BaseModel):
+    id: str
+    status: str
+
+
+class IdAndBeacon(BaseModel):
+    id: str
+    beacon: Optional[str] = None
+
+
+class IdAndIcon(BaseModel):
+    id: str
+    icon: bytes

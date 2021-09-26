@@ -2,7 +2,7 @@ from typing import Optional
 
 from fastapi import FastAPI
 
-from backend.types.types import Friends, IdAndPassword, IdPair, Message, NameAndPassword, User
+from backend.types.types import Friends, IdAndBeacon, IdAndIcon, IdAndName, IdAndPassword, IdAndStatus, IdPair, Message, NameAndPassword, User
 
 app = FastAPI()
 
@@ -72,21 +72,24 @@ async def get_friends(id: str, icon: Optional[bool] = None):
 
 # ユーザーデータ変更系
 @app.post("/v1/me/name", response_model=Message)
-async def update_profile(id: str, name: str):
+async def update_profile(id_and_name: IdAndName):
+    id, name = id_and_name.id, id_and_name.name
     if len(id) == 6 and name:
         return {"message": "Ok"}
     return {"message": "Ng"}
 
 
 @app.post("/v1/me/status", response_model=Message)
-async def update_status(id: str, status: str):
+async def update_status(id_and_status: IdAndStatus):
+    id, status = id_and_status.id, id_and_status.status
     if len(id) == 6 and status in ["学校にいる", "今暇", "忙しい", "学校にいない"]:
         return {"message": "Ok"}
     return {"message": "Ng"}
 
 
 @app.post("/v1/me/icon", response_model=Message)
-async def update_icon(id: str, icon: str):
+async def update_icon(id_and_icon: IdAndIcon):
+    id, icon = id_and_icon.id, id_and_icon.icon
     # ファイルを投げる方法を調べる
     if len(id) == 6 and icon:
         return {"message": "Ok"}
@@ -94,7 +97,8 @@ async def update_icon(id: str, icon: str):
 
 
 @app.post("/v1/me/beacon", response_model=Message)
-async def update_profile(id: str, beacon: str):
+async def update_profile(id_and_beacon: IdAndBeacon):
+    id, beacon = id_and_beacon.id, id_and_beacon.beacon
     # feature: check(beacon)
     if len(id) == 6 and beacon:
         return {"message": "Ok"}
