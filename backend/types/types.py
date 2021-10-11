@@ -4,7 +4,6 @@ from pydantic import BaseModel
 
 class ToGetUserInfo(BaseModel):
     id: str
-    icon: Optional[bool] = None
 
 
 class Message(BaseModel):
@@ -21,7 +20,7 @@ class User(BaseModel):
     name: str
     status: str
     beacon: Optional[str] = None
-    icon: Optional[bytes] = None
+    icon_path: str
 
 
 class Friends(BaseModel):
@@ -39,8 +38,8 @@ class Result(BaseModel):
 
 
 class IdPair(BaseModel):
-    id1: str
-    id2: str
+    my_id: str
+    opponents_id: str
 
 
 class NameAndPassword(BaseModel):
