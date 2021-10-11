@@ -15,7 +15,7 @@ async def root():
 # 認証系
 @app.post("/v1/registor")
 async def registor(name_and_pass: NameAndPassword):
-    name, _ = NameAndPassword.name, NameAndPassword.password
+    name, _ = name_and_pass.name, name_and_pass.password
     if name:
         return {"message": "Ok"}
     return {"message": "Ng"}
