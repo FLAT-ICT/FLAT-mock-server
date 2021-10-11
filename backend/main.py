@@ -117,7 +117,7 @@ async def update_profile(id_and_beacon: IdAndBeacon):
 # 友達登録・削除周りの処理
 @app.post("/v1/friends/add", response_model=Message)
 async def add_friend(id_pair: IdPair):
-    follower_id, followee_id = id_pair.my_id, id_pair.opponents_id
+    follower_id, followee_id = id_pair.my_id, id_pair.target_id
     if len(follower_id) == 6 and len(followee_id) == 6:
         return {"message": "Ok"}
     return {"message": "Ng"}
@@ -125,7 +125,7 @@ async def add_friend(id_pair: IdPair):
 
 @app.post("/v1/friends/remove", response_model=Message)
 async def remove_friend(id_pair: IdPair):
-    user_id, follow_id = id_pair.my_id, id_pair.opponents_id
+    user_id, follow_id = id_pair.my_id, id_pair.target_id
     if len(user_id) == 6 and len(follow_id) == 6:
         return {"message": "Ok"}
     return {"message": "Ng"}
@@ -133,7 +133,7 @@ async def remove_friend(id_pair: IdPair):
 
 @app.post("/v1/friends/reject", response_model=Message)
 async def reject_friend(id_pair: IdPair):
-    user_id, follow_id = id_pair.my_id, id_pair.opponents_id
+    user_id, follow_id = id_pair.my_id, id_pair.target_id
     if len(user_id) == 6 and len(follow_id) == 6:
         return {"message": "Ok"}
     return {"message": "Ng"}

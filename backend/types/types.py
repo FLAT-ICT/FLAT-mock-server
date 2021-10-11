@@ -39,7 +39,7 @@ class Result(BaseModel):
 
 class IdPair(BaseModel):
     my_id: str
-    opponents_id: str
+    target_id: str
 
 
 class NameAndPassword(BaseModel):
