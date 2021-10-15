@@ -49,7 +49,9 @@ async def get_user(id: str):
 # 友達検索ボタンを押したとき
 
 
-@app.get("v1/user/check", response_model=CheckFriend, responses=error_response([CustomNotFoundException, CustomValidationException, CustomRecordStructureException]))
+@app.get("v1/user/check",
+         response_model=CheckFriend,
+         responses=error_response([CustomNotFoundException, CustomValidationException, CustomRecordStructureException, CustomSameIdException]))
 async def check_friend(my_id: str, target_id: str):
     "検索ボタンを押したときに、ともだち関係を取得する必要がある"
 
@@ -75,7 +77,7 @@ async def check_friend(my_id: str, target_id: str):
     if target_id == "900002":
         raise CustomValidationException()
     if target_id == "900003" or my_id == target_id:
-        raise
+        raise CustomSameIdException()
     return result
 
 
