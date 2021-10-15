@@ -56,20 +56,20 @@ async def check_friend(my_id: str, target_id: str):
     "検索ボタンを押したときに、ともだち関係を取得する必要がある"
 
     result = {"id": target_id, "name": "usr0",
-              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requesetd": False}
+              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": False}
 
     if target_id == "100000":
         result = {"id": target_id, "name": "usr1",
-                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requesetd": False}
+                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": False}
     if target_id == "100001":
         result = {"id": target_id, "name": "usr2",
-                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": True, "requesetd": False}
+                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": True, "requested": False}
     if target_id == "100002":
         result = {"id": target_id, "name": "usr3",
-                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requesetd": True}
+                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": True}
     if target_id == "100003":
         result = {"id": target_id, "name": "usr4",
-                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": True, "requesetd": True}
+                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": True, "requested": True}
     if target_id == "900000":
         raise CustomNotFoundException()
     if target_id == "900001":
