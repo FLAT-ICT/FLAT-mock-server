@@ -1,8 +1,10 @@
 from typing import Optional
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
+from starlette.requests import Request
+from starlette.responses import JSONResponse
 
-from backend.types.types import Friends, IdAndBeacon, IdAndIcon, IdAndName, IdAndPassword, IdAndStatus, IdPair, Message, NameAndPassword, User
+from backend.types.types import *
 
 app = FastAPI()
 
@@ -42,6 +44,36 @@ async def get_user(id: str):
               "status": 0,
               "beacon": "595教室",
               "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon"}
+    return result
+
+# 友達検索ボタンを押したとき
+
+
+@app.get("v1/user/check", response_model=CheckFriend, responses=error_response([CustomNotFoundException, CustomValidationException, CustomRecordStructureException]))
+async def check_friend(my_id: str, target_id: str):
+    "検索ボタンを押したときに、ともだち関係を取得する必要がある"
+
+    result = {"id": target_id, "name": "usr0",
+              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requesetd": False}
+
+    if target_id == "100000":
+        result = {"id": target_id, "name": "usr1",
+                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requesetd": False}
+    if target_id == "100001":
+        result = {"id": target_id, "name": "usr2",
+                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": True, "requesetd": False}
+    if target_id == "100002":
+        result = {"id": target_id, "name": "usr3",
+                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requesetd": True}
+    if target_id == "100003":
+        result = {"id": target_id, "name": "usr4",
+                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": True, "requesetd": True}
+    if target_id == "900000":
+        raise CustomNotFoundException()
+    if target_id == "900001":
+        raise CustomRecordStructureException()
+    if target_id == "900002":
+        raise CustomValidationException()
     return result
 
 
@@ -137,3 +169,20 @@ async def reject_friend(id_pair: IdPair):
     if len(user_id) == 6 and len(follow_id) == 6:
         return {"message": "Ok"}
     return {"message": "Ng"}
+
+
+# Error Handling
+
+@app.exception_handler(CustomNotFoundException)
+async def custom_not_found_exception(request: Request, exception: CustomNotFoundException):
+    return JSONResponse(status_code=exception.status_code, content={"message": exception.message})
+
+
+@app.exception_handler(CustomValidationException)
+async def custom_validation_exception(request: Request, exception: CustomValidationException):
+    return JSONResponse(status_code=exception.status_code, content={"message": exception.message})
+
+
+@app.exception_handler(CustomRecordStructureException)
+async def custom_record_structure_exception(request: Request, exception: CustomRecordStructureException):
+    return JSONResponse(status_code=exception.status_code, content={"message": exception.message})

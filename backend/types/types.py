@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Literal, Optional
 from pydantic import BaseModel
 
@@ -70,3 +71,65 @@ class IdAndBeacon(BaseModel):
 class IdAndIcon(BaseModel):
     id: str
     icon: bytes
+
+
+class CheckFriend(BaseModel):
+    """id: str
+    name: str
+    icon_path: str
+    applied: bool
+    requested: bool
+"""
+    id: str
+    name: str
+    icon_path: str
+    applied: bool
+    requested: bool
+
+
+@dataclass
+class CustomError(Exception):
+    status_code: int
+    message: str
+
+
+class CustomNotFoundException(CustomError):
+    def __init__(self, id: str):
+        self.id = id
+    status_code = 404
+    message = f"id is not found"
+
+@dataclass
+class CustomValidationException(CustomError):
+    status_code = 422
+    message = "invalid validation"
+
+
+@dataclass
+class CustomRecordStructureException(CustomError):
+    # def __init__(self):
+    #     super.__init__()
+        # self.status_code = 422
+        # self.message = "invalid structure"
+    status_code = 422
+    message = "invalid structure"
+
+
+def error_response(error_types: list[CustomError]) -> dict:
+    # error_types に列挙した ApiError を OpenAPI の書式で定義する
+    d = {}
+    for et in error_types:
+        if not d.get(et.status_code):
+            d[et.status_code] = {
+                'description': f'"{et.message}"',
+                'content': {
+                    'application/json': {
+                        'example': {
+                            'message': et.message
+                        }
+                    }
+                }}
+        else:
+            # 同じステータスコードなら description を追記
+            d[et.status_code]['description'] += f'<br>"{et.message}"'
+    return d
