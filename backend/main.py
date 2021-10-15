@@ -49,7 +49,7 @@ async def get_user(id: str):
 # 友達検索ボタンを押したとき
 
 
-@app.get("v1/user/check",
+@app.get("/v1/user/check",
          response_model=CheckFriend,
          responses=error_response([CustomNotFoundException, CustomValidationException, CustomRecordStructureException, CustomSameIdException]))
 async def check_friend(my_id: str, target_id: str):
