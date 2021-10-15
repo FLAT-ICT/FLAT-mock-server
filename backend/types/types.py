@@ -87,15 +87,12 @@ class CheckFriend(BaseModel):
     requested: bool
 
 
-@dataclass
 class CustomError(Exception):
     status_code: int
     message: str
 
 
 class CustomNotFoundException(CustomError):
-    def __init__(self, id: str):
-        self.id = id
     status_code = 404
     message = f"id is not found"
 
