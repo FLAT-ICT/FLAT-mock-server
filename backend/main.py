@@ -53,7 +53,19 @@ async def get_user(id: str):
          response_model=CheckFriend,
          responses=error_response([CustomNotFoundException, CustomValidationException, CustomRecordStructureException, CustomSameIdException]))
 async def check_friend(my_id: str, target_id: str):
-    "検索ボタンを押したときに、ともだち関係を取得する必要がある"
+    """検索ボタンを押したときに、友だち関係を取得する必要がある  
+target_id によって結果が変わる。
+```
+100000: どちらも片思いしていない  
+100001: 片思いをしている  
+100002: 片思いされている  
+100003: 既に友だち  
+900000: not found (IDなし)  
+900001: 返ってくるデータの形が違う  
+900002: validation error  
+900003: same id error  
+```
+    """
 
     result = {"id": target_id, "name": "usr0",
               "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": False}
