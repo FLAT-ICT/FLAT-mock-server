@@ -99,13 +99,12 @@ class CustomNotFoundException(CustomError):
     status_code = 404
     message = f"id is not found"
 
-@dataclass
 class CustomValidationException(CustomError):
     status_code = 422
     message = "invalid validation"
 
 
-@dataclass
+
 class CustomRecordStructureException(CustomError):
     # def __init__(self):
     #     super.__init__()
@@ -114,6 +113,9 @@ class CustomRecordStructureException(CustomError):
     status_code = 422
     message = "invalid structure"
 
+class CustomSameIdException(CustomError):
+    status_code = 471
+    message = "can't assign same id"
 
 def error_response(error_types: list[CustomError]) -> dict:
     # error_types に列挙した ApiError を OpenAPI の書式で定義する

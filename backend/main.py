@@ -74,6 +74,8 @@ async def check_friend(my_id: str, target_id: str):
         raise CustomRecordStructureException()
     if target_id == "900002":
         raise CustomValidationException()
+    if target_id == "900003" or my_id == target_id:
+        raise
     return result
 
 
@@ -185,4 +187,9 @@ async def custom_validation_exception(request: Request, exception: CustomValidat
 
 @app.exception_handler(CustomRecordStructureException)
 async def custom_record_structure_exception(request: Request, exception: CustomRecordStructureException):
+    return JSONResponse(status_code=exception.status_code, content={"message": exception.message})
+
+
+@app.exception_handler(CustomSameIdException)
+async def custom_same_id_exception(request: Request, exception: CustomSameIdException):
     return JSONResponse(status_code=exception.status_code, content={"message": exception.message})
