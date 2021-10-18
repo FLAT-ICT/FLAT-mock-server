@@ -53,17 +53,17 @@ async def get_user(id: str):
          response_model=CheckFriend,
          responses=error_response([CustomNotFoundException, CustomValidationException, CustomRecordStructureException, CustomSameIdException]))
 async def check_friend(my_id: str, target_id: str):
-    """検索ボタンを押したときに、友だち関係を取得する必要がある  
+    """検索ボタンを押したときに、友だち関係を取得する必要がある
 target_id によって結果が変わる。
 ```
-100000: どちらも片思いしていない  
-100001: 片思いをしている  
-100002: 片思いされている  
-100003: 既に友だち  
-900000: not found (IDなし)  
-900001: 返ってくるデータの形が違う  
-900002: validation error  
-900003: same id error  
+100000: どちらも片思いしていない
+100001: 片思いをしている
+100002: 片思いされている
+100003: 既に友だち
+900000: not found (IDなし)
+900001: 返ってくるデータの形が違う
+900002: validation error
+900003: same id error
 ```
     """
 
@@ -93,13 +93,31 @@ target_id によって結果が変わる。
     return result
 
 
-@app.get("/v1/friends", response_model=Friends)
-async def get_friends(id: str):
+@app.get("/v1/friends",
+         response_model=Friends,
+         responses=error_response([CustomNotFoundException, CustomValidationException, CustomRecordStructureException]))
+async def get_friends(my_id: str):
+    """友達一覧を返すやつ  
+正常
+```
+id: xxyyzz
+```
+`xx` -> 任意  
+`yy` -> 片思いの数  
+`zz` -> 相互の数  
+
+エラー
+```
+900000: not found (IDなし)
+900001: 返ってくるデータの形が違う
+900002: validation error -> 500吐くかも
+```
+    """
     # icon -> QueryString
 
-    def user(id: str):
-        return {"id": f"0000{id}",
-                "name": f"usr{id}",
+    def user(my_id: str):
+        return {"id": f"0000{my_id}",
+                "name": f"usr{my_id}",
                 "status": 0,
                 "beacon": "595教室",
                 "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon"}
@@ -118,10 +136,17 @@ async def get_friends(id: str):
             result["one_side"].append(user(tmp_id))
         return result
 
-    if len(id) != 6:
+    if len(my_id) != 6:
         return {"mutual": [], "one_side": []}
 
-    return result(id)
+    if my_id == "900000":
+        raise CustomNotFoundException()
+    if my_id == "900001":
+        raise CustomRecordStructureException()
+    if my_id == "900002":
+        raise CustomValidationException()
+
+    return result(my_id)
 
 
 # ユーザーデータ変更系
