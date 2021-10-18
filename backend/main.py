@@ -48,35 +48,32 @@ async def get_user(id: str):
 @app.get("/v1/friends", response_model=Friends)
 async def get_friends(id: str):
     # icon -> QueryString
+
+    def user(id: str):
+        return {"id": f"0000{id}",
+                "name": f"usr{id}",
+                "status": 0,
+                "beacon": "595教室",
+                "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon"}
+
+    def result(id: str) -> dict[list[dict[str]]]:
+        result = {"mutual": [], "one_side": []}
+
+        mutual = int(id[2:4])
+        one_side = int(id[4:])
+
+        for i in range(1, mutual+1):
+            tmp_id = str(i).zfill(2)
+            result["mutual"].append(user(tmp_id))
+        for i in range(1, one_side+1):
+            tmp_id = str(i+mutual).zfill(2)
+            result["one_side"].append(user(tmp_id))
+        return result
+
     if len(id) != 6:
         return {"mutual": [], "one_side": []}
-    result = {
-        "mutual": [
-            {"id": "000000",
-             "name": "usr01",
-             "status": 0,
-             "beacon": "595教室",
-             "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon"},
-            {"id": "000001",
-             "name": "usr02",
-             "status": 0,
-             "beacon": "講堂",
-             "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon"},
-            {"id": "000002",
-             "name": "usr03",
-             "status": 0,
-             "beacon": "体育館",
-             "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon"}
-        ],
-        "one_side": [
-            {"id": "000010",
-             "name": "usr10",
-             "status": 0,
-             "beacon": "情報ライブラリー",
-             "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon"}
-        ]
-    }
-    return result
+
+    return result(id)
 
 
 # ユーザーデータ変更系
