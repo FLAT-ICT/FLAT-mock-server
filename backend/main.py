@@ -103,8 +103,8 @@ async def get_friends(my_id: str):
 id: xxyyzz
 ```
 `xx` -> 任意  
-`yy` -> 片思いの数  
-`zz` -> 相互の数  
+`yy` -> 相互の数 
+`zz` -> 片思いの数
 
 エラー
 ```
