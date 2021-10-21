@@ -58,11 +58,10 @@ async def search_users(my_id: int, target_name: str):
 い: 片思いをしている
 う: 片思いされている
 え: 既に友だち
-お: あ-お すべて
+お: あ-え すべて
 ア: not found (IDなし)
 イ: 返ってくるデータの形が違う
 ウ: validation error
-エ: same id error
 ```
     """
 
