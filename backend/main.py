@@ -47,17 +47,18 @@ async def get_user(id: int):
 # 友達検索ボタンを押したとき
 
 
-@app.get("/v1/user/check",
-         response_model=CheckFriend,
+@app.get("/v1/user/search",
+         response_model=list[SearchUser],
          responses=error_response([CustomNotFoundException, CustomValidationException, CustomRecordStructureException, CustomSameIdException]))
-async def check_friend(my_id: int, target_name: str):
+async def search_users(my_id: int, target_name: str):
     """検索ボタンを押したときに、友だち関係を取得する必要がある
-target_id によって結果が変わる。
+名前によって結果が変わる。
 ```
 あ: どちらも片思いしていない
 い: 片思いをしている
 う: 片思いされている
 え: 既に友だち
+お: あ-お すべて
 ア: not found (IDなし)
 イ: 返ってくるデータの形が違う
 ウ: validation error
@@ -65,21 +66,31 @@ target_id によって結果が変わる。
 ```
     """
 
-    result = {"id": target_name, "name": "usr0",
-              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": False}
+    result = [{"id": target_name, "name": "usr0",
+              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": False}]
 
     if target_name == "あ":
-        result = {"id": 100000, "name": "usr1",
-                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": False}
+        result = [{"id": 100000, "name": "usr1",
+                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": False}]
     if target_name == "い":
-        result = {"id": 100001, "name": "usr2",
-                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": True, "requested": False}
+        result = [{"id": 100001, "name": "usr2",
+                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": True, "requested": False}]
     if target_name == "う":
-        result = {"id": 100002, "name": "usr3",
-                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": True}
+        result = [{"id": 100002, "name": "usr3",
+                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": True}]
     if target_name == "え":
-        result = {"id": 100003, "name": "usr4",
+        result = [{"id": 100003, "name": "usr4",
+                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": True, "requested": True}]
+    if target_name == "お":
+        result = [{"id": 100000, "name": "usr1",
+                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": False},
+                  {"id": 100001, "name": "usr2",
+                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": True, "requested": False},
+                  {"id": 100002, "name": "usr3",
+                  "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": True},
+                  {"id": 100003, "name": "usr4",
                   "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": True, "requested": True}
+                  ]
     if target_name == "ア":
         raise CustomNotFoundException()
     if target_name == "イ":

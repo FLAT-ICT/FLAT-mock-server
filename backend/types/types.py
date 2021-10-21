@@ -73,7 +73,7 @@ class IdAndIcon(BaseModel):
     icon: bytes
 
 
-class CheckFriend(BaseModel):
+class SearchUser(BaseModel):
     """id: int
     name: str
     icon_path: str
