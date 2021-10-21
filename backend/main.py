@@ -24,21 +24,19 @@ async def registor(name_and_pass: NameAndPassword):
 
 
 @app.post("/v1/login")
-async def login(id_and_password: IdAndPassword):
-    id, _ = id_and_password.id, id_and_password.password
-    if len(id) == 6:
+async def login(name_and_pass: NameAndPassword):
+    name, _ = name_and_pass.name, name_and_pass.password
+    if name:
         return {"message": "Ok"}
     return {"message": "Ng"}
 
 
 # データ取得系
 @app.get("/v1/user", response_model=User)
-async def get_user(id: str):
+async def get_user(id: int):
     "return user by id"
     # ここ何返すか迷ってる
     # list[User] を返すようにするのもあり
-    if len(id) != 6:
-        return []
     result = {"id": id,
               "name": "hoge",
               "status": 0,
@@ -52,58 +50,58 @@ async def get_user(id: str):
 @app.get("/v1/user/check",
          response_model=CheckFriend,
          responses=error_response([CustomNotFoundException, CustomValidationException, CustomRecordStructureException, CustomSameIdException]))
-async def check_friend(my_id: str, target_id: str):
+async def check_friend(my_id: int, target_name: str):
     """検索ボタンを押したときに、友だち関係を取得する必要がある
 target_id によって結果が変わる。
 ```
-100000: どちらも片思いしていない
-100001: 片思いをしている
-100002: 片思いされている
-100003: 既に友だち
-900000: not found (IDなし)
-900001: 返ってくるデータの形が違う
-900002: validation error
-900003: same id error
+あ: どちらも片思いしていない
+い: 片思いをしている
+う: 片思いされている
+え: 既に友だち
+ア: not found (IDなし)
+イ: 返ってくるデータの形が違う
+ウ: validation error
+エ: same id error
 ```
     """
 
-    result = {"id": target_id, "name": "usr0",
+    result = {"id": target_name, "name": "usr0",
               "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": False}
 
-    if target_id == "100000":
-        result = {"id": target_id, "name": "usr1",
+    if target_name == "あ":
+        result = {"id": 100000, "name": "usr1",
                   "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": False}
-    if target_id == "100001":
-        result = {"id": target_id, "name": "usr2",
+    if target_name == "い":
+        result = {"id": 100001, "name": "usr2",
                   "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": True, "requested": False}
-    if target_id == "100002":
-        result = {"id": target_id, "name": "usr3",
+    if target_name == "う":
+        result = {"id": 100002, "name": "usr3",
                   "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": True}
-    if target_id == "100003":
-        result = {"id": target_id, "name": "usr4",
+    if target_name == "え":
+        result = {"id": 100003, "name": "usr4",
                   "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": True, "requested": True}
-    if target_id == "900000":
+    if target_name == "ア":
         raise CustomNotFoundException()
-    if target_id == "900001":
+    if target_name == "イ":
         raise CustomRecordStructureException()
-    if target_id == "900002":
+    if target_name == "ウ":
         raise CustomValidationException()
-    if target_id == "900003" or my_id == target_id:
-        raise CustomSameIdException()
+    # if target_name == "900003":
+    #     raise CustomSameIdException()
     return result
 
 
 @app.get("/v1/friends",
          response_model=Friends,
          responses=error_response([CustomNotFoundException, CustomValidationException, CustomRecordStructureException]))
-async def get_friends(my_id: str):
-    """友達一覧を返すやつ  
+async def get_friends(my_id: int):
+    """友達一覧を返すやつ
 正常
 ```
 id: xxyyzz
 ```
-`xx` -> 任意  
-`yy` -> 相互の数 
+`xx` -> 任意
+`yy` -> 相互の数
 `zz` -> 片思いの数
 
 エラー
@@ -115,18 +113,18 @@ id: xxyyzz
     """
     # icon -> QueryString
 
-    def user(my_id: str):
-        return {"id": f"0000{my_id}",
-                "name": f"usr{my_id}",
+    def user(my_id: int):
+        return {"id": my_id,
+                "name": f"usr{str(my_id).zfill(2)}",
                 "status": 0,
                 "beacon": "595教室",
                 "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon"}
 
-    def result(id: str) -> dict[list[dict[str]]]:
+    def result(id: int) -> dict[list[dict[str]]]:
         result = {"mutual": [], "one_side": []}
 
-        mutual = int(id[2:4])
-        one_side = int(id[4:])
+        mutual = id // 100 % 100
+        one_side = id % 100
 
         for i in range(1, mutual+1):
             tmp_id = str(i).zfill(2)
@@ -139,43 +137,43 @@ id: xxyyzz
     if len(my_id) != 6:
         return {"mutual": [], "one_side": []}
 
-    if my_id == "900000":
+    if my_id == 900000:
         raise CustomNotFoundException()
-    if my_id == "900001":
+    if my_id == 900001:
         raise CustomRecordStructureException()
-    if my_id == "900002":
+    if my_id == 900002:
         raise CustomValidationException()
 
     return result(my_id)
 
 
 # ユーザーデータ変更系
-@app.post("/v1/user/name", response_model=Message)
+@ app.post("/v1/user/name", response_model=Message)
 async def update_profile(id_and_name: IdAndName):
     id, name = id_and_name.id, id_and_name.name
-    if len(id) == 6 and name:
+    if id and name:
         return {"message": "Ok"}
     return {"message": "Ng"}
 
 
-@app.post("/v1/user/status", response_model=Message)
+@ app.post("/v1/user/status", response_model=Message)
 async def update_status(id_and_status: IdAndStatus):
     id, status = id_and_status.id, id_and_status.status
-    if len(id) == 6 and status in list(range(4)):
+    if id and status in list(range(4)):
         return {"message": "Ok"}
     return {"message": "Ng"}
 
 
-@app.post("/v1/user/icon", response_model=Message)
+@ app.post("/v1/user/icon", response_model=Message)
 async def update_icon(id_and_icon: IdAndIcon):
     id, icon = id_and_icon.id, id_and_icon.icon
     # ファイルを投げる方法を調べる
-    if len(id) == 6 and icon:
+    if id and icon:
         return {"message": "Ok"}
     return {"message": "Ng"}
 
 
-@app.post("/v1/user/beacon", response_model=Message)
+@ app.post("/v1/user/beacon", response_model=Message)
 async def update_profile(id_and_beacon: IdAndBeacon):
     id, beacon = id_and_beacon.id, id_and_beacon.beacon
     # feature: check(beacon)
@@ -185,7 +183,7 @@ async def update_profile(id_and_beacon: IdAndBeacon):
 
 
 # 友達登録・削除周りの処理
-@app.post("/v1/friends/add", response_model=Message)
+@ app.post("/v1/friends/add", response_model=Message)
 async def add_friend(id_pair: IdPair):
     follower_id, followee_id = id_pair.my_id, id_pair.target_id
     if len(follower_id) == 6 and len(followee_id) == 6:
@@ -193,7 +191,7 @@ async def add_friend(id_pair: IdPair):
     return {"message": "Ng"}
 
 
-@app.post("/v1/friends/remove", response_model=Message)
+@ app.post("/v1/friends/remove", response_model=Message)
 async def remove_friend(id_pair: IdPair):
     user_id, follow_id = id_pair.my_id, id_pair.target_id
     if len(user_id) == 6 and len(follow_id) == 6:
@@ -201,7 +199,7 @@ async def remove_friend(id_pair: IdPair):
     return {"message": "Ng"}
 
 
-@app.post("/v1/friends/reject", response_model=Message)
+@ app.post("/v1/friends/reject", response_model=Message)
 async def reject_friend(id_pair: IdPair):
     user_id, follow_id = id_pair.my_id, id_pair.target_id
     if len(user_id) == 6 and len(follow_id) == 6:
@@ -211,21 +209,21 @@ async def reject_friend(id_pair: IdPair):
 
 # Error Handling
 
-@app.exception_handler(CustomNotFoundException)
+@ app.exception_handler(CustomNotFoundException)
 async def custom_not_found_exception(request: Request, exception: CustomNotFoundException):
     return JSONResponse(status_code=exception.status_code, content={"message": exception.message})
 
 
-@app.exception_handler(CustomValidationException)
+@ app.exception_handler(CustomValidationException)
 async def custom_validation_exception(request: Request, exception: CustomValidationException):
     return JSONResponse(status_code=exception.status_code, content={"message": exception.message})
 
 
-@app.exception_handler(CustomRecordStructureException)
+@ app.exception_handler(CustomRecordStructureException)
 async def custom_record_structure_exception(request: Request, exception: CustomRecordStructureException):
     return JSONResponse(status_code=exception.status_code, content={"message": exception.message})
 
 
-@app.exception_handler(CustomSameIdException)
+@ app.exception_handler(CustomSameIdException)
 async def custom_same_id_exception(request: Request, exception: CustomSameIdException):
     return JSONResponse(status_code=exception.status_code, content={"message": exception.message})
