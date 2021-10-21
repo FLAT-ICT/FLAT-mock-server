@@ -177,7 +177,7 @@ async def update_icon(id_and_icon: IdAndIcon):
 async def update_profile(id_and_beacon: IdAndBeacon):
     id, beacon = id_and_beacon.id, id_and_beacon.beacon
     # feature: check(beacon)
-    if len(id) == 6 and beacon:
+    if id and beacon:
         return {"message": "Ok"}
     return {"message": "Ng"}
 
