@@ -144,8 +144,8 @@ id: xxyyzz
             result["one_side"].append(user(tmp_id))
         return result
 
-    if len(my_id) != 6:
-        return {"mutual": [], "one_side": []}
+    # if len(my_id) != 6:
+    #     return {"mutual": [], "one_side": []}
 
     if my_id == 900000:
         raise CustomNotFoundException()
@@ -196,7 +196,7 @@ async def update_profile(id_and_beacon: IdAndBeacon):
 @ app.post("/v1/friends/add", response_model=Message)
 async def add_friend(id_pair: IdPair):
     follower_id, followee_id = id_pair.my_id, id_pair.target_id
-    if len(follower_id) == 6 and len(followee_id) == 6:
+    if follower_id and followee_id:
         return {"message": "Ok"}
     return {"message": "Ng"}
 
@@ -204,7 +204,7 @@ async def add_friend(id_pair: IdPair):
 @ app.post("/v1/friends/remove", response_model=Message)
 async def remove_friend(id_pair: IdPair):
     user_id, follow_id = id_pair.my_id, id_pair.target_id
-    if len(user_id) == 6 and len(follow_id) == 6:
+    if user_id and follow_id:
         return {"message": "Ok"}
     return {"message": "Ng"}
 
@@ -212,7 +212,7 @@ async def remove_friend(id_pair: IdPair):
 @ app.post("/v1/friends/reject", response_model=Message)
 async def reject_friend(id_pair: IdPair):
     user_id, follow_id = id_pair.my_id, id_pair.target_id
-    if len(user_id) == 6 and len(follow_id) == 6:
+    if user_id and follow_id:
         return {"message": "Ok"}
     return {"message": "Ng"}
 
