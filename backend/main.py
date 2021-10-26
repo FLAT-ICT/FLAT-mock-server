@@ -59,14 +59,14 @@ async def search_users(my_id: int, target_name: str):
 う: 片思いされている
 え: 既に友だち
 お: あ-え すべて
-ア: not found (IDなし)
+ア: not found (自身のIDなし)
 イ: 返ってくるデータの形が違う
 ウ: validation error
+default: Ok && return []
 ```
     """
 
-    result = [{"id": target_name, "name": "usr0",
-              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": False}]
+    result = []
 
     if target_name == "あ":
         result = [{"id": 100000, "name": "usr1",
