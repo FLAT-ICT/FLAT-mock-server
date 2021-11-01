@@ -64,7 +64,7 @@ class IdAndStatus(BaseModel):
 
 
 class ScannedBeacon(BaseModel):
-    id: int
+    user_id: int
     uuid: str
     major: int
     minor: int
