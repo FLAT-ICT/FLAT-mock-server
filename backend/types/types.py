@@ -63,9 +63,13 @@ class IdAndStatus(BaseModel):
     status: str
 
 
-class IdAndBeacon(BaseModel):
+class ScannedBeacon(BaseModel):
     id: int
-    beacon: Optional[str] = None
+    uuid: str
+    major: int
+    minor: int
+    rssi: int
+    distance: int
 
 
 class IdAndIcon(BaseModel):
@@ -96,23 +100,25 @@ class CustomNotFoundException(CustomError):
     status_code = 404
     message = f"id is not found"
 
+
 class CustomValidationException(CustomError):
     status_code = 422
     message = "invalid validation"
 
 
-
 class CustomRecordStructureException(CustomError):
     # def __init__(self):
     #     super.__init__()
-        # self.status_code = 422
-        # self.message = "invalid structure"
+    # self.status_code = 422
+    # self.message = "invalid structure"
     status_code = 422
     message = "invalid structure"
+
 
 class CustomSameIdException(CustomError):
     status_code = 471
     message = "can't assign same id"
+
 
 def error_response(error_types: list[CustomError]) -> dict:
     # error_types に列挙した ApiError を OpenAPI の書式で定義する

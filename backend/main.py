@@ -184,15 +184,22 @@ async def update_icon(id_and_icon: IdAndIcon):
 
 
 @ app.post("/v1/user/beacon", response_model=Message)
-async def update_profile(id_and_beacon: IdAndBeacon):
-    id, beacon = id_and_beacon.id, id_and_beacon.beacon
+async def update_profile(sb: ScannedBeacon):
+    """pub user_id: i32,
+    pub uuid: String,
+    pub major: i32,
+    pub minor: i32,
+    pub rssi: f32,
+    pub distance: f32,"""
+    id, uuid, major, minor, rssi, distance = sb.id, sb.uuid, sb.major, sb.minor, sb.rssi, sb.distance
     # feature: check(beacon)
-    if id and beacon:
+    if id and uuid and minor:
         return {"message": "Ok"}
     return {"message": "Ng"}
 
-
 # 友達登録・削除周りの処理
+
+
 @ app.post("/v1/friends/add", response_model=Message)
 async def add_friend(id_pair: IdPair):
     follower_id, followee_id = id_pair.my_id, id_pair.target_id
