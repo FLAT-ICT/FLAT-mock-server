@@ -183,7 +183,10 @@ async def update_icon(id_and_icon: IdAndIcon):
     return {"message": "Ng"}
 
 
-@ app.post("/v1/user/beacon", response_model=Message)
+@ app.post("/v1/user/beacon",
+           response_model=Message,
+           responses=error_response(
+               [CustomNotFoundException, CustomValidationException, CustomRecordStructureException]))
 async def update_profile(sb: ScannedBeacon):
     """pub user_id: i32,
     pub uuid: String,
@@ -191,11 +194,11 @@ async def update_profile(sb: ScannedBeacon):
     pub minor: i32,
     pub rssi: f32,
     pub distance: f32,"""
-    id, uuid, major, minor, rssi, distance = sb.id, sb.uuid, sb.major, sb.minor, sb.rssi, sb.distance
+    id, uuid, major, minor, rssi, distance = sb.user_id, sb.uuid, sb.major, sb.minor, sb.rssi, sb.distance
     # feature: check(beacon)
     if id and uuid and minor:
         return {"message": "Ok"}
-    return {"message": "Ng"}
+    raise CustomNotFoundException()
 
 # 友達登録・削除周りの処理
 
