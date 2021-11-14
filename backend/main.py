@@ -189,14 +189,12 @@ async def update_icon(id_and_icon: IdAndIcon):
                [CustomNotFoundException, CustomValidationException, CustomRecordStructureException]))
 async def update_profile(sb: ScannedBeacon):
     """pub user_id: i32,
-    pub uuid: String,
     pub major: i32,
     pub minor: i32,
-    pub rssi: f32,
-    pub distance: f32,"""
-    id, uuid, major, minor, rssi, distance = sb.user_id, sb.uuid, sb.major, sb.minor, sb.rssi, sb.distance
+    pub rssi: f32,"""
+    id, major, minor, rssi = sb.user_id, sb.major, sb.minor, sb.rssi
     # feature: check(beacon)
-    if id and uuid and minor:
+    if minor in [7943, 7945]:
         return {"message": "Ok"}
     raise CustomNotFoundException()
 
