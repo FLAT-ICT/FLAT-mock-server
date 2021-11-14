@@ -15,20 +15,26 @@ async def root():
 
 
 # 認証系
-@app.post("/v1/register")
+@app.post("/v1/register", response_model=User)
 async def registor(name_and_pass: NameAndPassword):
     name, _ = name_and_pass.name, name_and_pass.password
-    if name:
-        return {"message": "Ok"}
-    return {"message": "Ng"}
+    result = {"id": 1,
+              "name": name,
+              "status": 0,
+              "spot": "",
+              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon"}
+    return result
 
 
-@app.post("/v1/login")
+@app.post("/v1/login", response_model=User)
 async def login(name_and_pass: NameAndPassword):
     name, _ = name_and_pass.name, name_and_pass.password
-    if name:
-        return {"message": "Ok"}
-    return {"message": "Ng"}
+    result = {"id": 1,
+              "name": name,
+              "status": 0,
+              "spot": "",
+              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon"}
+    return result
 
 
 # データ取得系
@@ -40,7 +46,7 @@ async def get_user(id: int):
     result = {"id": id,
               "name": "hoge",
               "status": 0,
-              "beacon": "595教室",
+              "spot": "595教室",
               "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon"}
     return result
 

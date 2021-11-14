@@ -14,13 +14,13 @@ class Message(BaseModel):
 class User(BaseModel):
     """id: int
     name: str
-    status: str
-    beacon: Optional[str] = None
-    icon: Optional[bytes] = None"""
+    status: int
+    spot: Optional[str] = None
+    icon: str"""
     id: int
     name: str
-    status: str
-    beacon: Optional[str] = None
+    status: int
+    spot: str = ""
     icon_path: str
 
 
