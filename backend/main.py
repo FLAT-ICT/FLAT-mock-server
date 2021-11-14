@@ -200,7 +200,7 @@ async def update_profile(sb: ScannedBeacon):
     pub rssi: f32,"""
     id, major, minor, rssi = sb.user_id, sb.major, sb.minor, sb.rssi
     # feature: check(beacon)
-    if minor in [7943, 7945]:
+    if minor in [7954, 7945]:
         return {"message": "Ok"}
     raise CustomNotFoundException()
 
