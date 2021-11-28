@@ -22,7 +22,7 @@ class User(BaseModel):
     status: int
     spot: str = ""
     icon_path: str
-    logedin_at: str
+    loggedin_at: str
 
 
 class Friends(BaseModel):

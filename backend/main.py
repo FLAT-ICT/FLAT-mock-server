@@ -23,7 +23,7 @@ async def registor(name_and_pass: NameAndPassword):
               "status": 0,
               "spot": "",
               "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon",
-              "logedin_at": "2018-12-07T10:53:33"}
+              "loggedin_at": "2018-12-07T10:53:33"}
     return result
 
 
@@ -35,7 +35,7 @@ async def login(name_and_pass: NameAndPassword):
               "status": 0,
               "spot": "",
               "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon",
-              "logedin_at": "2018-12-07T10:53:33"}
+              "loggedin_at": "2018-12-07T10:53:33"}
     return result
 
 
@@ -49,7 +49,8 @@ async def get_user(id: int):
               "name": "hoge",
               "status": 0,
               "spot": "595教室",
-              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon"}
+              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon",
+              "loggedin_at": "2018-12-07T10:53:33"}
     return result
 
 # 友達検索ボタンを押したとき
