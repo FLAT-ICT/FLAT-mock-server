@@ -22,6 +22,7 @@ class User(BaseModel):
     status: int
     spot: str = ""
     icon_path: str
+    logedin_at: str
 
 
 class Friends(BaseModel):
@@ -118,6 +119,11 @@ class CustomRecordStructureException(CustomError):
 class CustomSameIdException(CustomError):
     status_code = 471
     message = "can't assign same id"
+
+
+class CustomInvalidPassword(CustomError):
+    status_code = 400
+    massge = "invalid password"
 
 
 def error_response(error_types: list[CustomError]) -> dict:

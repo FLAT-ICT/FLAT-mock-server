@@ -22,28 +22,30 @@ async def registor(name_and_pass: NameAndPassword):
               "name": name,
               "status": 0,
               "spot": "",
-              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon"}
+              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon",
+              "logedin_at": "2018-12-07T10:53:33"}
     return result
 
 
-@app.post("/v1/login", response_model=User)
+@app.post("/v1/login", response_model=User, responses=error_response([]))
 async def login(name_and_pass: NameAndPassword):
-    name, _ = name_and_pass.name, name_and_pass.password
-    result = {"id": 1,
+    name, _=name_and_pass.name, name_and_pass.password
+    result={"id": 1,
               "name": name,
               "status": 0,
               "spot": "",
-              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon"}
+              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon",
+              "logedin_at": "2018-12-07T10:53:33"}
     return result
 
 
 # データ取得系
-@app.get("/v1/user", response_model=User)
+@ app.get("/v1/user", response_model=User)
 async def get_user(id: int):
     "return user by id"
     # ここ何返すか迷ってる
     # list[User] を返すようにするのもあり
-    result = {"id": id,
+    result={"id": id,
               "name": "hoge",
               "status": 0,
               "spot": "595教室",
@@ -53,7 +55,7 @@ async def get_user(id: int):
 # 友達検索ボタンを押したとき
 
 
-@app.get("/v1/user/search",
+@ app.get("/v1/user/search",
          response_model=list[SearchUser],
          responses=error_response([CustomNotFoundException, CustomValidationException, CustomRecordStructureException, CustomSameIdException]))
 async def search_users(my_id: int, target_name: str):
@@ -72,22 +74,22 @@ default: Ok && return []
 ```
     """
 
-    result = []
+    result=[]
 
     if target_name == "あ":
-        result = [{"id": 100000, "name": "usr1",
+        result=[{"id": 100000, "name": "usr1",
                   "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": False}]
     if target_name == "い":
-        result = [{"id": 100001, "name": "usr2",
+        result=[{"id": 100001, "name": "usr2",
                   "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": True, "requested": False}]
     if target_name == "う":
-        result = [{"id": 100002, "name": "usr3",
+        result=[{"id": 100002, "name": "usr3",
                   "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": True}]
     if target_name == "え":
-        result = [{"id": 100003, "name": "usr4",
+        result=[{"id": 100003, "name": "usr4",
                   "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": True, "requested": True}]
     if target_name == "お":
-        result = [{"id": 100000, "name": "usr1",
+        result=[{"id": 100000, "name": "usr1",
                   "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": False, "requested": False},
                   {"id": 100001, "name": "usr2",
                   "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon", "applied": True, "requested": False},
@@ -107,7 +109,7 @@ default: Ok && return []
     return result
 
 
-@app.get("/v1/friends",
+@ app.get("/v1/friends",
          response_model=Friends,
          responses=error_response([CustomNotFoundException, CustomValidationException, CustomRecordStructureException]))
 async def get_friends(my_id: int):
@@ -137,16 +139,16 @@ id: xxyyzz
                 "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon"}
 
     def result(id: int) -> dict[list[dict[str]]]:
-        result = {"mutual": [], "one_side": []}
+        result={"mutual": [], "one_side": []}
 
-        mutual = id // 100 % 100
-        one_side = id % 100
+        mutual=id // 100 % 100
+        one_side=id % 100
 
         for i in range(1, mutual+1):
-            tmp_id = str(i).zfill(2)
+            tmp_id=str(i).zfill(2)
             result["mutual"].append(user(tmp_id))
         for i in range(1, one_side+1):
-            tmp_id = str(i+mutual).zfill(2)
+            tmp_id=str(i+mutual).zfill(2)
             result["one_side"].append(user(tmp_id))
         return result
 
@@ -166,7 +168,7 @@ id: xxyyzz
 # ユーザーデータ変更系
 @ app.post("/v1/user/name", response_model=Message)
 async def update_profile(id_and_name: IdAndName):
-    id, name = id_and_name.id, id_and_name.name
+    id, name=id_and_name.id, id_and_name.name
     if id and name:
         return {"message": "Ok"}
     return {"message": "Ng"}
@@ -174,7 +176,7 @@ async def update_profile(id_and_name: IdAndName):
 
 @ app.post("/v1/user/status", response_model=Message)
 async def update_status(id_and_status: IdAndStatus):
-    id, status = id_and_status.id, id_and_status.status
+    id, status=id_and_status.id, id_and_status.status
     if id and status in list(range(4)):
         return {"message": "Ok"}
     return {"message": "Ng"}
@@ -182,7 +184,7 @@ async def update_status(id_and_status: IdAndStatus):
 
 @ app.post("/v1/user/icon", response_model=Message)
 async def update_icon(id_and_icon: IdAndIcon):
-    id, icon = id_and_icon.id, id_and_icon.icon
+    id, icon=id_and_icon.id, id_and_icon.icon
     # ファイルを投げる方法を調べる
     if id and icon:
         return {"message": "Ok"}
@@ -198,7 +200,7 @@ async def update_profile(sb: ScannedBeacon):
     pub major: i32,
     pub minor: i32,
     pub rssi: f32,"""
-    id, major, minor, rssi = sb.user_id, sb.major, sb.minor, sb.rssi
+    id, major, minor, rssi=sb.user_id, sb.major, sb.minor, sb.rssi
     # feature: check(beacon)
     if minor in [7954, 7945]:
         return {"message": "Ok"}
@@ -209,7 +211,7 @@ async def update_profile(sb: ScannedBeacon):
 
 @ app.post("/v1/friends/add", response_model=Message)
 async def add_friend(id_pair: IdPair):
-    follower_id, followee_id = id_pair.my_id, id_pair.target_id
+    follower_id, followee_id=id_pair.my_id, id_pair.target_id
     if follower_id and followee_id:
         return {"message": "Ok"}
     return {"message": "Ng"}
@@ -217,7 +219,7 @@ async def add_friend(id_pair: IdPair):
 
 @ app.post("/v1/friends/remove", response_model=Message)
 async def remove_friend(id_pair: IdPair):
-    user_id, follow_id = id_pair.my_id, id_pair.target_id
+    user_id, follow_id=id_pair.my_id, id_pair.target_id
     if user_id and follow_id:
         return {"message": "Ok"}
     return {"message": "Ng"}
@@ -225,7 +227,7 @@ async def remove_friend(id_pair: IdPair):
 
 @ app.post("/v1/friends/reject", response_model=Message)
 async def reject_friend(id_pair: IdPair):
-    user_id, follow_id = id_pair.my_id, id_pair.target_id
+    user_id, follow_id=id_pair.my_id, id_pair.target_id
     if user_id and follow_id:
         return {"message": "Ok"}
     return {"message": "Ng"}
