@@ -25,6 +25,14 @@ class User(BaseModel):
     loggedin_at: str
 
 
+class IsLoggedIn(BaseModel):
+    """own(bool): 自分の端末でログインしているかどうか
+    others(bool): 他の端末でログインしているかどうか
+    """
+    own: bool
+    others: bool
+
+
 class Friends(BaseModel):
     """mutual: list[User]
     one_side: list[User]"""
