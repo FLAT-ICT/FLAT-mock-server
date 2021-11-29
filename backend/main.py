@@ -39,7 +39,7 @@ async def login(name_and_pass: NameAndPassword):
     return result
 
 
-@app.get("/v1/user/is_loggedin", response_class=IsLoggedIn)
+@app.get("/v1/user/is_loggedin", response_model=IsLoggedIn)
 async def is_logged_in(id: int, loggedin_at: str):
     result = {
         "own": True,
