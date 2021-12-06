@@ -83,7 +83,7 @@ class ScannedBeacon(BaseModel):
 
 class IdAndIcon(BaseModel):
     id: int
-    icon: str # base64 encoding
+    icon: str  # base64 encoding
 
 
 class SearchUser(BaseModel):
