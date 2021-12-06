@@ -87,11 +87,11 @@ class IdAndIcon(BaseModel):
 
 
 class SearchUser(BaseModel):
-    """id: int
-    name: str
-    icon_path: str
-    applied: bool
-    requested: bool
+    """id: int  
+    name: str  
+    icon_path: str  
+    applied: bool  
+    requested: bool  
 """
     id: int
     name: str

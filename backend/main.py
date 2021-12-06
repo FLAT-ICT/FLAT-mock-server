@@ -179,10 +179,10 @@ id: xxyyzz
 @ app.post("/v1/user/name", response_model=User)
 async def update_profile(id_and_name: IdAndName):
     """
-    200
-    400 same name error
-    404 id not exist
-    422 validation error
+    200  
+    400 same name error  
+    404 id not exist  
+    422 validation error  
     """
     id, name = id_and_name.my_id, id_and_name.target_name
     if id and name:
@@ -203,9 +203,9 @@ async def update_profile(id_and_name: IdAndName):
 @ app.post("/v1/user/status", response_model=User)
 async def update_status(id_and_status: IdAndStatus):
     """
-    200
-    400 same name error
-    404 id not exist
+    200  
+    400 same name error  
+    404 id not exist  
     """
     id, status = id_and_status.id, id_and_status.status
     if id and status in list(range(4)):
@@ -247,9 +247,9 @@ async def update_icon(id_and_icon: IdAndIcon):
            responses=error_response(
                [CustomNotFoundException, CustomValidationException, CustomRecordStructureException]))
 async def update_profile(sb: ScannedBeacon):
-    """pub user_id: i32,
-    pub major: i32,
-    pub minor: i32,
+    """pub user_id: i32,  
+    pub major: i32,  
+    pub minor: i32,  
     pub rssi: f32,"""
     id, major, minor, rssi = sb.user_id, sb.major, sb.minor, sb.rssi
     # feature: check(beacon)
