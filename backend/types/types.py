@@ -63,8 +63,8 @@ class IdAndPassword(BaseModel):
 
 
 class IdAndName(BaseModel):
-    id: int
-    name: str
+    my_id: int
+    target_name: str
 
 
 class IdAndStatus(BaseModel):
@@ -83,7 +83,7 @@ class ScannedBeacon(BaseModel):
 
 class IdAndIcon(BaseModel):
     id: int
-    icon: bytes
+    icon: str # base64 encoding
 
 
 class SearchUser(BaseModel):

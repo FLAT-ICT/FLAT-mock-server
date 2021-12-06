@@ -176,20 +176,51 @@ id: xxyyzz
 
 
 # ユーザーデータ変更系
-@ app.post("/v1/user/name", response_model=Message)
+@ app.post("/v1/user/name", response_model=User)
 async def update_profile(id_and_name: IdAndName):
-    id, name = id_and_name.id, id_and_name.name
+    """
+    200
+    400 same name error
+    404 id not exist
+    422 validation error
+    """
+    id, name = id_and_name.my_id, id_and_name.target_name
     if id and name:
-        return {"message": "Ok"}
-    return {"message": "Ng"}
+        return {"id": id,
+              "name": "hoge",
+              "status": 0,
+              "spot": "595教室",
+              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon",
+              "loggedin_at": "2018-12-07T10:53:33"}
+    return {"id": id,
+              "name": "hoge",
+              "status": 0,
+              "spot": "595教室",
+              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon",
+              "loggedin_at": "2018-12-07T10:53:33"}
 
 
-@ app.post("/v1/user/status", response_model=Message)
+@ app.post("/v1/user/status", response_model=User)
 async def update_status(id_and_status: IdAndStatus):
+    """
+    200
+    400 same name error
+    404 id not exist
+    """
     id, status = id_and_status.id, id_and_status.status
     if id and status in list(range(4)):
-        return {"message": "Ok"}
-    return {"message": "Ng"}
+        return {"id": id,
+              "name": "hoge",
+              "status": 0,
+              "spot": "595教室",
+              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon",
+              "loggedin_at": "2018-12-07T10:53:33"}
+    return {"id": id,
+              "name": "hoge",
+              "status": 0,
+              "spot": "595教室",
+              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon",
+              "loggedin_at": "2018-12-07T10:53:33"}
 
 
 @ app.post("/v1/user/icon", response_model=Message)
@@ -197,8 +228,18 @@ async def update_icon(id_and_icon: IdAndIcon):
     id, icon = id_and_icon.id, id_and_icon.icon
     # ファイルを投げる方法を調べる
     if id and icon:
-        return {"message": "Ok"}
-    return {"message": "Ng"}
+        return {"id": id,
+              "name": "hoge",
+              "status": 0,
+              "spot": "595教室",
+              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon",
+              "loggedin_at": "2018-12-07T10:53:33"}
+    return {"id": id,
+              "name": "hoge",
+              "status": 0,
+              "spot": "595教室",
+              "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon",
+              "loggedin_at": "2018-12-07T10:53:33"}
 
 
 @ app.post("/v1/user/beacon",
