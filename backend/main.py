@@ -146,7 +146,9 @@ id: xxyyzz
                 "name": f"usr{str(my_id).zfill(2)}",
                 "status": 0,
                 "beacon": "595教室",
-                "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon"}
+                "icon_path": "https://dummyimage.com/64x64/000/fff&text=icon",
+                "loggedin_at": "2018-12-07T10:53:33"
+                }
 
     def result(id: int) -> dict[list[dict[str]]]:
         result = {"mutual": [], "one_side": []}
